@@ -4,6 +4,7 @@ import { Navigate } from "react-router-dom";
 
 export default () => {
     const [pengeluaran, setPengeluaran] = useState([])
+    const [saldo, setSaldo] = useState([])
     const [tanggal, setTanggal] = useState()
     const [logOut, setLogOut] = useState(false)
     const [belanja, setBelanja] = useState(false)
@@ -21,8 +22,19 @@ export default () => {
         }
     }
 
+    const getSaldo = async () => {
+        try{
+            let res = await axios.get(`https://web-production-6c38.up.railway.app/users/saldo/${user_id}`)
+            setSaldo(res.data)
+            console.log(res.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     useEffect(() => {
         getPengeluaran()
+        getSaldo()
     }, [tanggal])
 
     const LogOut = (event) => {
@@ -52,6 +64,29 @@ export default () => {
             <div className="container">
                 <div className="row justify-content-center">
                     <div className="col-md-8">
+                        <table className="table">
+                            <thead>
+                                <tr>
+                                    <th>GOPAY</th>
+                                    <th>REKENING</th>
+                                    <th>CASH</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    saldo.map((saldouser,index) => {
+                                        return (
+                                            <tr key={index}>
+                                                <td>{saldouser.uang_gopay}</td>
+                                                <td>{saldouser.uang_rekening}</td>
+                                                <td>{saldouser.uang_cash}</td>
+                                            </tr>
+                                        )
+                                    })
+                                }
+                            </tbody>
+                        </table>
+                        <h5>Pilih tanggal yang ingin dilihat pada tabel dibawah!</h5>
                         <input type="date" name="tanggal" value={tanggal} onChange={(e) => setTanggal(e.target.value)} className="form-control"/>
                         <table className="table">
                             <thead>
@@ -85,6 +120,7 @@ export default () => {
             <button onClick={LogOut} type="submit">
                 LogOut
             </button>
+            
             </div>
         </div>
     );

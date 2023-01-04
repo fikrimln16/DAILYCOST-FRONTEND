@@ -68,8 +68,8 @@ export default () => {
                             <thead>
                                 <tr>
                                     <th>GOPAY</th>
-                                    <th>REKENING</th>
                                     <th>CASH</th>
+                                    <th>REKENING</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -78,8 +78,8 @@ export default () => {
                                         return (
                                             <tr key={index}>
                                                 <td>{saldouser.uang_gopay}</td>
-                                                <td>{saldouser.uang_rekening}</td>
                                                 <td>{saldouser.uang_cash}</td>
+                                                <td>{saldouser.uang_rekening}</td>
                                             </tr>
                                         )
                                     })

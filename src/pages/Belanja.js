@@ -4,7 +4,7 @@ import { Navigate } from "react-router-dom";
 
 export default () => {
 
-    const [selectedValue, setSelectedValue] = useState('')
+    const [selectedValue, setSelectedValue] = useState('GOPAY')
     const [nama, setNama] = useState('')
     const [jumlah, setJumlah] = useState(0)
     const [tanggal, setTanggal] = useState('')

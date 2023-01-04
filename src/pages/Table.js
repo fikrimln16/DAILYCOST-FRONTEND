@@ -6,6 +6,7 @@ export default () => {
     const [pengeluaran, setPengeluaran] = useState([])
     const [tanggal, setTanggal] = useState()
     const [logOut, setLogOut] = useState(false)
+    const [belanja, setBelanja] = useState(false)
 
     const user_id = localStorage.getItem("user_id")
     
@@ -20,19 +21,31 @@ export default () => {
         }
     }
 
-    const LogOut = (event) => {
-        event.preventDefault();
-        localStorage.setItem("user_id", 0)
-        setLogOut(true)
-    };
-
-    if(logOut){
-        return <Navigate to='/'/>;
-    }
-
     useEffect(() => {
         getPengeluaran()
     }, [tanggal])
+
+    const LogOut = (event) => {
+        event.preventDefault();
+        setLogOut(true);
+        localStorage.setItem("user_id", 0);
+        localStorage.setItem("email", "");
+        localStorage.setItem("password", "");
+    };
+
+    const Belanja = (event) => {
+        event.preventDefault();
+        setBelanja(true)
+    };
+
+    if (logOut){
+        return <Navigate to='/'/>;
+    }
+
+    if (belanja){
+        return <Navigate to='/belanja'/>;
+    }
+
 
     return (
         <div className="py-5">
@@ -66,6 +79,9 @@ export default () => {
                         </table>
                     </div>
                 </div>
+                <button className="bg-dark" onClick={Belanja} type="submit">
+                Belanja
+            </button>
             <button onClick={LogOut} type="submit">
                 LogOut
             </button>

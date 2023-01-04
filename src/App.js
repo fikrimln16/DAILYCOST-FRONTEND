@@ -10,23 +10,24 @@ import {
 import Table from "./pages/Table";
 import Register from "./pages/Register";
 import Topup from "./pages/Topup";
+import Belanja from "./pages/Belanja";
 
 const isAuth = false;
 
-function PrivateRoute({ children, ...rest }) {
-  return (
-    <Route
-      {...rest}
-      render={() => {
-        if (isAuth) {
-          return children;
-        } else {
-          return <Navigate to="/login" />;
-        }
-      }}
-    />
-  );
-}
+// function PrivateRoute({ children, ...rest }) {
+//   return (
+//     <Route
+//       {...rest}
+//       render={() => {
+//         if (isAuth) {
+//           return children;
+//         } else {
+//           return <Navigate to="/login" />;
+//         }
+//       }}
+//     />
+//   );
+// }
 
 export default function App() {
   return (
@@ -37,6 +38,7 @@ export default function App() {
           <Route exact path="/table" element={<Table/>} />
           <Route exact path="/register" element={<Register/>} />
           <Route exact path="/topup" element={<Topup/>} />
+          <Route exact path="/belanja" element={<Belanja/>} />
         </Routes>
       </Router>
     </div>

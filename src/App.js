@@ -1,77 +1,44 @@
-import "./App.css";
-import axios from "axios";
+import "./styles/App.css";
 import React, { useState } from "react";
-import { Button, Container } from "react-bootstrap";
+import Login from "./pages/Login";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
+import Table from "./pages/Table";
+import Register from "./pages/Register";
+import Topup from "./pages/Topup";
 
-function LoginForm() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+const isAuth = false;
 
-  const login = {
-    email: username,
-    password: password,
-  };
-
-  const handleUsernameChange = (event) => {
-    setUsername(event.target.value);
-  };
-
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-  };
-
-  const register = (event) => {
-    event.preventDefault();
-    console.log("Register");
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    if (!username || !password) {
-      setError("masukkan email dan password!");
-      return;
-    } else {
-      console.log(login);
-      axios
-        .post("https://web-production-6c38.up.railway.app/users/login", login)
-        .then((response) => {
-          // console.log(response.data.user_id)s
-          localStorage.setItem("user_id", JSON.parse(response.data.user_id));
-          alert("Berhasil Login")
-        })
-        .catch((err) => alert("password salah"));
-    }
-  };
-
+function PrivateRoute({ children, ...rest }) {
   return (
-    <div className="container">
-      <form>
-        <label>
-          Username
-          <input type="text" value={username} onChange={handleUsernameChange} />
-        </label>
-        <br />
-        <label>
-          Password
-          <input
-            type="password"
-            value={password}
-            onChange={handlePasswordChange}
-          />
-        </label>
-        <br />
-        {error && <p>{error}</p>}
-        <button onClick={handleSubmit} type="submit">
-          Log In
-        </button>
-        <button onClick={register} type="submit">
-          Sign Up
-        </button>
-      </form>
-    </div>
+    <Route
+      {...rest}
+      render={() => {
+        if (isAuth) {
+          return children;
+        } else {
+          return <Navigate to="/login" />;
+        }
+      }}
+    />
   );
 }
 
-export default LoginForm;
+export default function App() {
+  return (
+    <div className="App">
+      <Router>
+        <Routes>
+          <Route exact path="/" element={<Login/>} />
+          <Route exact path="/table" element={<Table/>} />
+          <Route exact path="/register" element={<Register/>} />
+          <Route exact path="/topup" element={<Topup/>} />
+        </Routes>
+      </Router>
+    </div>
+  );
+}

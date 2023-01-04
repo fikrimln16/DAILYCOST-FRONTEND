@@ -76,6 +76,17 @@ input[type="password"] {
   background: #ccc;
 }
 
+input[type="email"] {
+  /* Mengubah tampilan input */
+  width: 100%;
+  padding: 12px 20px;
+  border: 0.5px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin: 10px;
+  background: #ccc;
+}
+
 button[type="submit"] {
   /* Menambahkan animasi hover pada button */
   width: 100%;

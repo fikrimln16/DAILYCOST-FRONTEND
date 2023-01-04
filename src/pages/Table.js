@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { Navigate } from "react-router-dom";
 
-function Table() {
-
+export default () => {
     const [pengeluaran, setPengeluaran] = useState([])
     const [tanggal, setTanggal] = useState()
+    const [logOut, setLogOut] = useState(false)
 
     const user_id = localStorage.getItem("user_id")
     
@@ -19,6 +20,15 @@ function Table() {
         }
     }
 
+    const LogOut = (event) => {
+        event.preventDefault();
+        localStorage.setItem("user_id", 0)
+        setLogOut(true)
+    };
+
+    if(logOut){
+        return <Navigate to='/'/>;
+    }
 
     useEffect(() => {
         getPengeluaran()
@@ -56,9 +66,11 @@ function Table() {
                         </table>
                     </div>
                 </div>
+            <button onClick={LogOut} type="submit">
+                LogOut
+            </button>
             </div>
         </div>
     );
 }
 
-export default Table;

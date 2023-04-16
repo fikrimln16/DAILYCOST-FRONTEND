@@ -10,39 +10,49 @@ export default () => {
     const [belanja, setBelanja] = useState(false)
 
     const user_id = localStorage.getItem("user_id")
-    
+    const token = localStorage.getItem("token")
 
-    const getPengeluaran = async () => {
-        try{
-            let res = await axios.get(`https://web-production-6c38.up.railway.app/users/${user_id}/pengeluaran/${tanggal}`)
-            setPengeluaran(res.data)
-            console.log(res.data)
-        } catch (error) {
-            console.log(error)
-        }
-    }
+    
 
     const getSaldo = async () => {
         try{
-            let res = await axios.get(`https://web-production-6c38.up.railway.app/users/saldo/${user_id}`)
-            setSaldo(res.data)
-            console.log(res.data)
+            let res = await axios.get(`http://localhost:5000/user/saldo/${user_id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+            setSaldo(res.data.results)
+            console.log(saldo)
         } catch (error) {
-            console.log(error)
+            console.log(error.message)
+        }
+    }
+
+    const getPengeluaran = async () => {
+        try{
+            let res = await axios.get(`http://localhost:5000/user/pengeluaran/${user_id}/list/${tanggal}`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem("token")}`
+                }
+            })
+            setPengeluaran(res.data.results)
+            console.log(res.data.results)
+            console.log(tanggal)
+        } catch (error) {
+            console.log(error.message)
         }
     }
 
     useEffect(() => {
         getPengeluaran()
         getSaldo()
+        console.log(token)
     }, [tanggal])
 
     const LogOut = (event) => {
         event.preventDefault();
         setLogOut(true);
-        localStorage.setItem("user_id", 0);
-        localStorage.setItem("email", "");
-        localStorage.setItem("password", "");
+        localStorage.clear();
     };
 
     const Belanja = (event) => {
@@ -76,7 +86,7 @@ export default () => {
                                 {
                                     saldo.map((saldouser,index) => {
                                         return (
-                                            <tr key={index}>
+                                            <tr key={index}> 
                                                 <td>{saldouser.uang_gopay}</td>
                                                 <td>{saldouser.uang_cash}</td>
                                                 <td>{saldouser.uang_rekening}</td>

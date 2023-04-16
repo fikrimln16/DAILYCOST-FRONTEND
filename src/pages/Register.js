@@ -4,7 +4,7 @@ import { Navigate } from "react-router-dom";
 
 export default () => {
   const [formData, setFormData] = useState({
-    nama: '',
+    name: '',
     email: '',
     password: ''
   });
@@ -21,22 +21,22 @@ export default () => {
 
   const registerHandler = (event) => {
     event.preventDefault();
-    if (!formData.nama || !formData.email || !formData.password) {
+    if (!formData.name || !formData.email || !formData.password) {
       setError("masukkan data!");
       return;
       } else {
       console.log(formData);
       axios
-          .post("https://web-production-6c38.up.railway.app/users", formData)
+          .post("http://localhost:5000/register", formData)
           .then((response) => {
-          // console.log(response.data.user_id)s
-          // localStorage.setItem("user_id", JSON.parse(response.data.user_id));
+          console.log(response.data.message);
+          // localStorage.setItem("user_id", JSON.parse(response.data.id));
+          localStorage.setItem("token", response.data.token);
+          localStorage.setItem("user_id", response.data.data.id);
           alert("Berhasil membuat akun!");
-          localStorage.setItem("email", formData.email);
-          localStorage.setItem("password", formData.password);
           setBerhasil(true);
           })
-          .catch((err) => alert("tidak bisa!"));
+          .catch((err) => alert(err));
       }
   };
 
@@ -47,8 +47,8 @@ export default () => {
   return (
     <form>
       <label>
-        Nama:
-        <input type="text" name="nama" value={formData.nama} onChange={handleChange} />
+        name:
+        <input type="text" name="name" value={formData.name} onChange={handleChange} />
       </label>
       <br />
       <label>

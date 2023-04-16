@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 
 export default () => {
@@ -38,10 +38,13 @@ export default () => {
         } else {
         console.log(login);
         axios
-            .post("https://web-production-6c38.up.railway.app/users/login", login)
+            .post("http://localhost:5000/login", login)
             .then((response) => {
             // console.log(response.data.user_id)s
-            localStorage.setItem("user_id", JSON.parse(response.data.user_id));
+            localStorage.setItem("user_id", JSON.parse(response.data.data.id));
+            localStorage.setItem("token", response.data.token);
+            console.log(response.data.token);
+            console.log(response.data.data.id);
             alert("Berhasil Login");
             setIsLoggedIn(true);
             })
@@ -56,6 +59,7 @@ export default () => {
     if (register){
         return <Navigate to='/register'/>;
     }
+
 
     return (
         <div className="container">

@@ -9,12 +9,7 @@ export default () => {
   const [cash, setCash] = useState("");
   const [error, setError] = useState("");
   const [berhasilIsi, setBerhasilIsi] = useState(false)
-
-
-  const data = {
-    email: localStorage.getItem("email"),
-    password: localStorage.getItem("password"),
-};
+  const token = localStorage.getItem("token")
 
   const handleGopayChange = (event) => {
     setGopay(event.target.value);
@@ -29,7 +24,7 @@ export default () => {
   };
 
   const user_depo = {
-    user_id: localStorage.getItem("user_id"),
+    id: localStorage.getItem("user_id"),
     uang_gopay: gopay,
     uang_cash: cash,
     uang_rekening: rekening,
@@ -45,38 +40,40 @@ export default () => {
       console.log(user_depo);
       axios
         .post(
-          "https://web-production-6c38.up.railway.app/users/newdepo",
-          user_depo
+          "http://localhost:5000/user/newdepo", user_depo, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }
         )
         .then((response) => {
           // console.log(response.data.user_id)s
-          localStorage.setItem("user_id", JSON.parse(response.data.user_id));
+          // localStorage.setItem("user_id", JSON.parse(response.data.user_id));
           alert("Berhasil input uang anda!");
           setBerhasilIsi(true);
         })
-        .catch((err) => alert("password salah"));
+        .catch((err) => alert("token expired, pastikan login kembali!"));
     }
   };
 
-  const getUserId = async () => {
-    try{
-      axios
-      .post("https://web-production-6c38.up.railway.app/users/login", data)
-      .then((response) => {
-      // console.log(response.data.user_id)s
-      localStorage.setItem("user_id", JSON.parse(response.data.user_id));
-      // console.log(localStorage.getItem("user_id"))
-      })
-      .catch((err) => alert("password salah"));
-    } catch (error) {
-        console.log(error)
-    }
-}
-
-  useEffect(() => {
-    getUserId()
-  }, [])
-
+//   const getUserId = async () => {
+//     try{
+//       axios
+//       .post("https://web-production-6c38.up.railway.app/users/login", data)
+//       .then((response) => {
+//       // console.log(response.data.user_id)s
+//       localStorage.setItem("user_id", JSON.parse(response.data.user_id));
+//       // console.log(localStorage.getItem("user_id"))
+//       })
+//       .catch((err) => alert("password salah"));
+//     } catch (error) {
+//         console.log(error)
+//     }
+// }
+  // useEffect(() => {
+  //   // getUserId()
+  // }, [])
+  
   if (berhasilIsi){
     return <Navigate to='/'/>;
 }
